@@ -5,28 +5,71 @@ module Trx
     attr_reader :private_key, :public_key
 
     def initialize(priv: nil)
-      @private_key = MoneyTree::PrivateKey.new key: priv
-      @public_key = MoneyTree::PublicKey.new private_key, compressed: false
-    end
 
-    def private_bytes
-      private_key.to_bytes
+      # Creates a new, randomized libsecp256k1 context.
+      ctx = Secp256k1::Context.new context_randomization_bytes: SecureRandom.random_bytes(32)
+
+      key = if priv.nil?
+              # Creates a new random key pair (public, private).
+              ctx.generate_key_pair
+            else
+
+              # Converts hex private keys to binary strings.
+              priv = Utils.hex_to_bin priv if Utils.is_hex? priv
+
+              # Creates a keypair from existing private key data.
+              ctx.key_pair_from_private_key priv
+            end
+
+      # Sets the attributes.
+      @private_key = key.private_key
+      @public_key = key.public_key
     end
 
     def private_hex
-      private_key.to_hex
+      Utils.bin_to_hex @private_key.data
     end
 
-    def public_bytes
-      public_key.to_bytes
+    def private_bytes
+      @private_key.data
     end
 
     def public_hex
-      public_key.to_hex
+      Utils.bin_to_hex @public_key.uncompressed
+    end
+
+    def public_hex_compressed
+      Utils.bin_to_hex @public_key.compressed
+    end
+
+    def public_bytes
+      @public_key.uncompressed
+    end
+
+    def public_bytes_compressed
+      @public_key.compressed
     end
 
     def address
       Address.from_public_hex public_hex
+    end
+
+    def sign(blob)
+      context = Secp256k1::Context.new
+      compact, recovery_id = context.sign_recoverable(@private_key, blob).compact
+      signature = compact.bytes
+      is_leading_zero = true
+      [recovery_id].pack("N").unpack("C*").each do |byte|
+        is_leading_zero = false if byte > 0 and is_leading_zero
+        signature.append byte unless is_leading_zero and byte === 0
+      end
+      Utils.bin_to_hex signature.pack "c*"
+    end
+
+    def personal_sign(message)
+      prefixed_message = Signature.prefix_message message
+      hashed_message = Util.keccak256 prefixed_message
+      sign hashed_message
     end
   end
 end

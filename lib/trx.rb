@@ -5,6 +5,8 @@ require "digest/keccak"
 require "rlp"
 require "openssl"
 require "base58-alphabets"
+require "rbsecp256k1"
+require "securerandom"
 
 require_relative "trx/utils"
 require_relative "trx/key"
