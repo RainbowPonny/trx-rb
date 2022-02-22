@@ -2,45 +2,40 @@ PATH
   remote: .
   specs:
     trx (0.2.1)
+      activesupport (>= 4.2)
       ecdsa (~> 1.2)
-      faraday (~> 1.7.1)
+      faraday (~> 2.2.0)
       keccak (~> 1.3.0)
-      money-tree
       rlp
 
 GEM
   remote: https://rubygems.org/
   specs:
+    activesupport (7.0.2.2)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      i18n (>= 1.6, < 2)
+      minitest (>= 5.1)
+      tzinfo (~> 2.0)
     ast (2.4.2)
+    coderay (1.1.3)
+    concurrent-ruby (1.1.9)
     diff-lcs (1.5.0)
     ecdsa (1.2.0)
-    faraday (1.7.2)
-      faraday-em_http (~> 1.0)
-      faraday-em_synchrony (~> 1.0)
-      faraday-excon (~> 1.1)
-      faraday-httpclient (~> 1.0.1)
-      faraday-net_http (~> 1.0)
-      faraday-net_http_persistent (~> 1.1)
-      faraday-patron (~> 1.0)
-      faraday-rack (~> 1.0)
-      multipart-post (>= 1.2, < 3)
+    faraday (2.2.0)
+      faraday-net_http (~> 2.0)
       ruby2_keywords (>= 0.0.4)
-    faraday-em_http (1.0.0)
-    faraday-em_synchrony (1.0.0)
-    faraday-excon (1.1.0)
-    faraday-httpclient (1.0.1)
-    faraday-net_http (1.0.1)
-    faraday-net_http_persistent (1.2.0)
-    faraday-patron (1.0.0)
-    faraday-rack (1.0.0)
-    ffi (1.15.5)
+    faraday-net_http (2.0.1)
+    i18n (1.10.0)
+      concurrent-ruby (~> 1.0)
     keccak (1.3.0)
-    money-tree (0.10.0)
-      ffi
-    multipart-post (2.1.1)
+    method_source (1.0.0)
+    minitest (5.13.0)
     parallel (1.21.0)
     parser (3.1.0.0)
       ast (~> 2.4.1)
+    pry (0.14.1)
+      coderay (~> 1.1)
+      method_source (~> 1.0)
     rainbow (3.1.1)
     rake (13.0.6)
     regexp_parser (2.2.0)
@@ -72,12 +67,16 @@ GEM
       parser (>= 3.0.1.1)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
+    tzinfo (2.0.4)
+      concurrent-ruby (~> 1.0)
     unicode-display_width (2.1.0)
 
 PLATFORMS
+  ruby
   x86_64-linux
 
 DEPENDENCIES
+  pry (~> 0.14)
   rake (~> 13.0)
   rspec (~> 3.2)
   rubocop (~> 1.7)
