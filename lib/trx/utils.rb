@@ -38,5 +38,11 @@ module Trx
 
       hash
     end
+
+    def is_hex?(str)
+      return false unless str.is_a? String
+      str = remove_hex_prefix str
+      str.match /\A[0-9a-fA-F]*\z/
+    end
   end
 end

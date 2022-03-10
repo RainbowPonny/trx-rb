@@ -31,11 +31,15 @@ module Trx
     alias_method :valid?, :checksum_matches?
 
     def to_bytes
-      Utils.hex_to_bin(to_hex)
+      Utils.hex_to_bin(to_base58_decode_hex)
+    end
+
+    def to_base58_decode_hex
+      Utils.base58_decode_hex(address)
     end
 
     def to_hex
-      Utils.base58_decode_hex(address)
+      Utils.base58_decode_hex(address)[0..-9]
     end
 
     def to_s
@@ -49,7 +53,7 @@ module Trx
     end
 
     def checksum_hex
-      to_hex[-8..-1]
+      to_base58_decode_hex[-8..-1]
     end
   end
 end
