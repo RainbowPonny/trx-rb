@@ -68,7 +68,7 @@ module Trx
 
     def personal_sign(message)
       prefixed_message = Signature.prefix_message message
-      hashed_message = Util.keccak256 prefixed_message
+      hashed_message = Utils.keccak256 prefixed_message
       sign hashed_message
     end
   end

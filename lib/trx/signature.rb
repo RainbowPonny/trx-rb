@@ -8,7 +8,7 @@ module Trx
     PREFIX_BYTE = "\x19".freeze
 
     def prefix_message(message)
-      "#{EIP191_PREFIX_BYTE}Tron Signed Message:\n#{message.size}#{message}"
+      "#{PREFIX_BYTE}Tron Signed Message:\n#{message.size}#{message}"
     end
   end
 end

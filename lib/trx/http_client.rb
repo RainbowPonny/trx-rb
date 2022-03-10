@@ -6,7 +6,7 @@ module Trx
     SHASTA_HOST = "https://api.shasta.trongrid.io"
     NILE_HOST = "https://nile.trongrid.io"
 
-    def initialize(host = nil, timeout: 30, trongrig_token: nil, headers: {}, raise_error: true)
+    def initialize(host = nil, timeout: 10, trongrig_token: nil, headers: {}, raise_error: true)
       @host = host
       @timeout = timeout
       @trongrig_token = trongrig_token
@@ -14,14 +14,15 @@ module Trx
       @raise_error = raise_error
     end
 
-    def perform_command(command, method: :post, **params)
-      connection.public_send(method, command, **params).body
+    def perform_command(command, params, method: :post)
+      connection.public_send(method, command, params).body
     end
 
     private
 
     def connection
       @_connection ||= Faraday.new(host) do |builder|
+        builder.options.timeout = timeout
         builder.use Faraday::Response::RaiseError if raise_error
         builder.request :url_encoded
         builder.response :json
