@@ -2,6 +2,8 @@
 
 Small ruby gem to sign tron transactions and interact with api
 
+This gem is not published to rubygems! 
+
 ## Usage
 
 Generate transaction signature
