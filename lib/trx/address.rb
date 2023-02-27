@@ -5,6 +5,8 @@ module Trx
     ADDRESS_PREFIX = "41"
 
     def self.from_public_hex(public_hex)
+      raise ArgumentError, "Expected String, got #{public_hex.class}" unless public_hex.is_a?(String)
+
       bytes = Utils.hex_to_bin(public_hex)
       address_bytes = Utils.keccak256(bytes[1..-1])[-20..-1]
       prefixed_address_hex = ADDRESS_PREFIX + RLP::Utils.encode_hex(address_bytes)
@@ -18,12 +20,14 @@ module Trx
     attr_reader :address
 
     def initialize(address)
+      raise ArgumentError, "Expected String, got #{address.class}" unless address.is_a?(String)
+
       @address = Utils.prefix_hex(address)
     end
 
     def checksum_matches?
       computed_checksum = Utils.sha256(
-        Utils.sha256(to_bytes[0..-5]).digest
+        Utils.sha256(to_bytes).digest
       ).hexdigest[0..7]
 
       checksum_hex == computed_checksum
@@ -31,7 +35,7 @@ module Trx
     alias_method :valid?, :checksum_matches?
 
     def to_bytes
-      Utils.hex_to_bin(to_base58_decode_hex)
+      Utils.hex_to_bin(to_base58_decode_hex)[0..-5]
     end
 
     def to_base58_decode_hex

@@ -59,10 +59,17 @@ module Trx
       compact, recovery_id = context.sign_recoverable(@private_key, blob).compact
       signature = compact.bytes
       is_leading_zero = true
-      [recovery_id].pack("N").unpack("C*").each do |byte|
-        is_leading_zero = false if byte > 0 and is_leading_zero
-        signature.append byte unless is_leading_zero and byte === 0
-      end
+      signature.append recovery_id
+
+      # TODO: WTF? It is necessary?
+
+      # [recovery_id].pack("N").unpack("C*").each do |byte|
+      #   is_leading_zero = false if byte > 0 and is_leading_zero
+      #   unless is_leading_zero and byte === 0
+      #     signature.append recovery_id
+      #   end
+      # end
+
       Utils.bin_to_hex signature.pack "c*"
     end
 
