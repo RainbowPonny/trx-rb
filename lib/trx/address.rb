@@ -22,7 +22,7 @@ module Trx
     def initialize(address)
       raise ArgumentError, "Expected String, got #{address.class}" unless address.is_a?(String)
 
-      @address = Utils.prefix_hex(address)
+      @address = Utils.prefix_hex(address.delete("\s"))
     end
 
     def checksum_matches?
