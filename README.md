@@ -9,7 +9,7 @@ This gem is not published to rubygems!
 Generate transaction signature
 
 ```ruby
-key_pair = Trx::Key.new(priv: 'your_rivate_key')
+key_pair = Trx::Key.new(priv: 'your_private_key')
 key_pair.sign(Trx::Utils.hex_to_bin('transaction_id'))
 ```
 

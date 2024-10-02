@@ -8,7 +8,7 @@ module Trx
       raise ArgumentError, "Expected String, got #{public_hex.class}" unless public_hex.is_a?(String)
 
       bytes = Utils.hex_to_bin(public_hex)
-      address_bytes = Utils.keccak256(bytes[1..-1])[-20..-1]
+      address_bytes = Utils.keccak256(bytes[1..])[-20..]
       prefixed_address_hex = ADDRESS_PREFIX + RLP::Utils.encode_hex(address_bytes)
       prefixed_address_bytes = Utils.hex_to_bin(prefixed_address_hex)
       checksum = Utils.base58check(prefixed_address_bytes).hexdigest[0..7]
@@ -57,7 +57,7 @@ module Trx
     end
 
     def checksum_hex
-      to_base58_decode_hex[-8..-1]
+      to_base58_decode_hex[-8..]
     end
   end
 end

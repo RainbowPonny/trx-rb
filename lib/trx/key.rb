@@ -5,7 +5,6 @@ module Trx
     attr_reader :private_key, :public_key
 
     def initialize(priv: nil)
-
       # Creates a new, randomized libsecp256k1 context.
       ctx = Secp256k1::Context.new context_randomization_bytes: SecureRandom.random_bytes(32)
 
@@ -58,7 +57,6 @@ module Trx
       context = Secp256k1::Context.new
       compact, recovery_id = context.sign_recoverable(@private_key, blob).compact
       signature = compact.bytes
-      is_leading_zero = true
       signature.append recovery_id
 
       # TODO: WTF? It is necessary?
