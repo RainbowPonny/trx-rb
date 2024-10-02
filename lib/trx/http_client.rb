@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Trx
   class HttpClient
     attr_reader :host, :timeout, :trongrig_token, :headers, :raise_error
@@ -21,13 +23,13 @@ module Trx
     private
 
     def connection
-      @_connection ||= Faraday.new(host) do |builder|
+      @connection ||= Faraday.new(host) do |builder|
         builder.options.timeout = timeout
         builder.use Faraday::Response::RaiseError if raise_error
         builder.request :url_encoded
         builder.response :json
         builder.adapter Faraday.default_adapter
-        builder.headers['TRON-PRO-API-KEY'] = trongrig_token unless trongrig_token.nil?
+        builder.headers["TRON-PRO-API-KEY"] = trongrig_token unless trongrig_token.nil?
       end
     end
   end

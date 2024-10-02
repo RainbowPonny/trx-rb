@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 module Trx
   module Abi
     class Function
-
       attr_accessor :name, :inputs, :outputs, :signature, :constant, :function_string
 
       def initialize(data)
@@ -19,14 +20,14 @@ module Trx
 
       def self.to_canonical_type(type)
         type
-        .gsub(/(int)(\z|\D)/, '\1256\2')
-        .gsub(/(uint)(\z|\D)/, '\1256\2')
-        .gsub(/(fixed)(\z|\D)/, '\1128x128\2')
-        .gsub(/(ufixed)(\z|\D)/, '\1128x128\2')
+          .gsub(/(int)(\z|\D)/, '\1256\2')
+          .gsub(/(uint)(\z|\D)/, '\1256\2')
+          .gsub(/(fixed)(\z|\D)/, '\1128x128\2')
+          .gsub(/(ufixed)(\z|\D)/, '\1128x128\2')
       end
 
       def self.calc_signature(name, inputs)
-        "#{name}(#{inputs.map {|x| self.to_canonical_type(x.type) }.join(",")})"
+        "#{name}(#{inputs.map { |x| to_canonical_type(x.type) }.join(",")})"
       end
 
       def self.calc_id(signature)

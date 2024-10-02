@@ -1,2 +1,4 @@
-require 'trx'
-require 'pry'
+# frozen_string_literal: true
+
+require "trx"
+require "pry"

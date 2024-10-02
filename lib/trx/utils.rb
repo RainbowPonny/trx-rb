@@ -13,7 +13,7 @@ module Trx
     end
 
     def remove_hex_prefix(string)
-      string[0, 2] == "0x" ? string[2..-1] : string
+      string[0, 2] == "0x" ? string[2..] : string
     end
 
     def prefix_hex(hex)
@@ -39,10 +39,11 @@ module Trx
       hash
     end
 
-    def is_hex?(str)
+    def is_hex?(str) # rubocop:disable Naming/PredicateName
       return false unless str.is_a? String
+
       str = remove_hex_prefix str
-      str.match /\A[0-9a-fA-F]*\z/
+      str.match(/\A[0-9a-fA-F]*\z/)
     end
   end
 end
