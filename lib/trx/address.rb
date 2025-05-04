@@ -25,7 +25,13 @@ module Trx
       @address = Utils.prefix_hex(address.delete("\s"))
     end
 
+    def valid_base58?(str)
+      !!(str =~ /\A[1-9A-HJ-NP-Za-km-z]+\z/)
+    end
+
     def checksum_matches?
+      return false unless valid_base58?(address)
+
       computed_checksum = Utils.sha256(
         Utils.sha256(to_bytes).digest
       ).hexdigest[0..7]
