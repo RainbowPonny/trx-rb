@@ -30,7 +30,7 @@ module Trx
     end
 
     def checksum_matches?
-      return false unless valid_base58?(address)
+      return false unless valid_base58?(to_s)
 
       computed_checksum = Utils.sha256(
         Utils.sha256(to_bytes).digest
