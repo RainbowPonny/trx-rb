@@ -9,7 +9,15 @@ module Trx
     def initialize(address, private_key: nil)
       raise ArgumentError, "Expected String, got #{address.class}" unless address.is_a?(String)
 
-      @private_key = private_key
+      @private_key =
+        case private_key
+        when Trx::Key
+          private_key
+        when String
+          Trx::Key.new(priv: private_key)
+        else
+          nil
+        end
       @address = Utils.prefix_hex(address.delete("\s"))
     end
 
