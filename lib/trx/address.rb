@@ -4,24 +4,12 @@ module Trx
   class Address
     ADDRESS_PREFIX = "41"
 
-    def self.from_public_hex(public_hex)
-      raise ArgumentError, "Expected String, got #{public_hex.class}" unless public_hex.is_a?(String)
+    attr_reader :address, :private_key
 
-      bytes = Utils.hex_to_bin(public_hex)
-      address_bytes = Utils.keccak256(bytes[1..-1])[-20..-1]
-      prefixed_address_hex = ADDRESS_PREFIX + RLP::Utils.encode_hex(address_bytes)
-      prefixed_address_bytes = Utils.hex_to_bin(prefixed_address_hex)
-      checksum = Utils.base58check(prefixed_address_bytes).hexdigest[0..7]
-      base58check_adress = Base58.encode_hex(prefixed_address_hex + checksum)
-
-      Address.new(base58check_adress)
-    end
-
-    attr_reader :address
-
-    def initialize(address)
+    def initialize(address, private_key:)
       raise ArgumentError, "Expected String, got #{address.class}" unless address.is_a?(String)
 
+      @private_key = private_key
       @address = Utils.prefix_hex(address.delete("\s"))
     end
 

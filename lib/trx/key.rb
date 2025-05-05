@@ -51,7 +51,19 @@ module Trx
     end
 
     def address
-      Address.from_public_hex public_hex
+      Address.new(address_str(public_hex), private_key: self)
+    end
+
+    def address_str(public_hex)
+      raise ArgumentError, "Expected String, got #{public_hex.class}" unless public_hex.is_a?(String)
+
+      bytes = Utils.hex_to_bin(public_hex)
+      address_bytes = Utils.keccak256(bytes[1..-1])[-20..-1]
+      prefixed_address_hex = Trx::Address::ADDRESS_PREFIX + RLP::Utils.encode_hex(address_bytes)
+      prefixed_address_bytes = Utils.hex_to_bin(prefixed_address_hex)
+      checksum = Utils.base58check(prefixed_address_bytes).hexdigest[0..7]
+
+      Base58.encode_hex(prefixed_address_hex + checksum)
     end
 
     def sign(blob)
