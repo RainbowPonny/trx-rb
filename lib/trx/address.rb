@@ -6,7 +6,7 @@ module Trx
 
     attr_reader :address, :private_key
 
-    def initialize(address, private_key:)
+    def initialize(address, private_key: nil)
       raise ArgumentError, "Expected String, got #{address.class}" unless address.is_a?(String)
 
       @private_key = private_key
